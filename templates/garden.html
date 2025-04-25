@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Анимированное дерево</title>
+    <meta http-equiv="refresh" content="0.5">
+    <style>
+        .tree {
+            font-family: monospace;
+            white-space: pre;
+            font-size: 18px;
+            line-height: 1;
+            color: #5e3a1a;
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px;
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h2>Этап роста: {{ stage }}/{{ max_stages }}</h2>
+        <a href="/?refresh=true" class="button">Авто-рост</a>
+        <a href="/?refresh=false" class="button">Стоп</a>
+    </div>
+
+    <div class="tree">{{ tree }}</div>
+
+    {% if auto_refresh %}
+    <script>
+        setTimeout(function(){
+            window.location.href = "/?refresh=true";
+        }, 500);
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,25 +1,120 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f8ff;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 1rem;
     text-align: center;
 }
-.garden {
-    display: flex;
-    flex-wrap: wrap;
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.plants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    justify-content: center;
+    padding: 20px;
 }
-.plant {
+
+.plant-card {
     background: white;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-button {
+
+.tree-container {
+    background: #f8f9fa;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.tree {
+    font-family: monospace;
+    line-height: 1;
+    white-space: pre;
+    color: #5e3a1a;
+    margin: 0;
+    overflow-x: auto;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    margin: 5px 0;
+}
+
+.btn-water {
     background: #4CAF50;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 15px;
+    border-radius: 4px;
     cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.flash {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.flash.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.flash.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+/* Добавляем стили для цветного дерева */
+.tree {
+    font-family: monospace;
+    line-height: 1.2;
+    white-space: pre;
+    background: #f8f9fa;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.tree-trunk {
+    color: #8B4513; /* Коричневый */
+}
+
+.tree-branch {
+    color: #A0522D; /* Светло-коричневый */
+}
+
+.tree-leaves {
+    color: #228B22; /* Зеленый */
+}
+
+.plant-card {
+    max-width: 350px;
+    overflow: hidden;
+}
+
+.tree-container {
+    max-height: 300px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    background: white;
 }

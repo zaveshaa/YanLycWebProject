@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-header">
+    <h2>Добро пожаловать, {{ user.username }}!</h2>
+    <p>Ваш прогресс в саду</p>
+</div>
+
+<div class="plants-grid">
+    {% for plant in plants %}
+    <div class="plant-card">
+        <h3>{{ plant.name }}</h3>
+        <p>Привычка: {{ plant.habit }}</p>
+        <div class="tree-container">
+            <div class="tree">{{ plant_trees[plant.id]|safe }}</div>
+        </div>
+        <div class="progress-container">
+            <p>Уровень: {{ plant.level }}</p>
+            <progress value="{{ plant.progress }}" max="100"></progress>
+            <span>{{ plant.progress }}%</span>
+        </div>
+        
+        <form action="{{ url_for('update_plant', plant_id=plant.id) }}" method="post">
+            <button type="submit" class="btn-water">
+                Выполнил "{{ plant.habit }}"
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
