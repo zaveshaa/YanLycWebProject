@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой виртуальный сад</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Привет, {{ username }}!</h1>  <!-- Изменили current_user.username на username -->
+    <div class="garden">
+        {% for plant in plants %}
+        <div class="plant">
+            <h3>{{ plant.name }} (Ур. {{ plant.level }})</h3>
+            <progress value="{{ plant.progress }}" max="100"></progress>
+            <form action="/update/{{ plant.id }}" method="post">
+                <button type="submit">Полить ({{ plant.habit }})</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="/logout">Выйти</a>
+</body>
+</html>
