@@ -1,31 +1,81 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="profile-header">
-    <h2>Добро пожаловать, {{ user.username }}!</h2>
-    <p>Ваш прогресс в саду</p>
-</div>
-
-<div class="plants-grid">
-    {% for plant in plants %}
-    <div class="plant-card">
-        <h3>{{ plant.name }}</h3>
-        <p>Привычка: {{ plant.habit }}</p>
-        <div class="tree-container">
-            <div class="tree">{{ plant_trees[plant.id]|safe }}</div>
-        </div>
-        <div class="progress-container">
-            <p>Уровень: {{ plant.level }}</p>
-            <progress value="{{ plant.progress }}" max="100"></progress>
-            <span>{{ plant.progress }}%</span>
-        </div>
-        
-        <form action="{{ url_for('update_plant', plant_id=plant.id) }}" method="post">
-            <button type="submit" class="btn-water">
-                Выполнил "{{ plant.habit }}"
-            </button>
-        </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль</title>
+    <style>
+        .tree-trunk { color: #8B4513; }
+        .tree-branch { color: #A0522D; }
+        .tree-leaves { color: #228B22; }
+        .plant-container {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            vertical-align: top;
+            width: 200px;
+        }
+        .tree-display {
+            font-family: monospace;
+            white-space: pre;
+            text-align: center;
+            line-height: 1.1;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        .habit-form {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Профиль {{ user.username }}</h1>
+    <a href="{{ url_for('logout') }}">Выйти</a>
+    
+    <h2>Мои привычки</h2>
+    <form class="habit-form" method="POST" action="{{ url_for('add_habit') }}">
+        <input type="text" name="habit_name" placeholder="Новая привычка" required>
+        <button type="submit">Добавить</button>
+    </form>
+    
+    <div>
+        {% for plant in plants %}
+            <div class="plant-container">
+                <h3>{{ plant.name }}</h3>
+                <p>Привычка: {{ plant.habit }}</p>
+                <p>Уровень: {{ plant.level }}</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ plant.progress }}%">{{ plant.progress }}%</div>
+                </div>
+                <div class="tree-display">{{ plant_trees[plant.id]|safe }}</div>
+                <form method="POST" action="{{ url_for('update_plant', plant_id=plant.id) }}">
+                    <button type="submit">+10% к прогрессу</button>
+                </form>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
-{% endblock %}
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

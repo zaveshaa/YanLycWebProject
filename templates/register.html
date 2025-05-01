@@ -7,16 +7,18 @@
     <h1>Регистрация</h1>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-            {% for message in messages %}
-                <p style="color: red;">{{ message }}</p>
-            {% endfor %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
     {% endwith %}
     <form method="POST">
-        <input type="text" name="username" placeholder="Логин" required>
+        <input type="text" name="username" placeholder="Имя пользователя" required>
         <input type="password" name="password" placeholder="Пароль" required>
         <button type="submit">Зарегистрироваться</button>
     </form>
-    <a href="/login">Вход</a>
+    <a href="{{ url_for('login') }}">Уже есть аккаунт? Войти</a>
 </body>
 </html>

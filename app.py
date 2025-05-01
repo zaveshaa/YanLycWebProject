@@ -1,22 +1,20 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
+from models import User, Plant
 from tree_generator import TreeGenerator
 import os
+import random
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///garden.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Инициализация расширений
 db.init_app(app)
-tree_gen = TreeGenerator()
 
-# Импорт моделей после инициализации db
 with app.app_context():
-    from models import User, Plant
-
+    db.create_all()
 
 def get_current_user():
     user_id = request.cookies.get('user_id')
@@ -24,14 +22,13 @@ def get_current_user():
         return User.query.get(int(user_id))
     return None
 
+@app.context_processor
+def inject_user():
+    return dict(get_current_user=get_current_user)
 
 @app.route('/')
 def index():
-    user = get_current_user()
-    if user:
-        return redirect(url_for('profile'))
     return render_template('index.html')
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -50,13 +47,16 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # Создаем стартовые растения
-        plants = [
-            Plant(name='Дуб', habit='спорт', user_id=user.id),
-            Plant(name='Клен', habit='чтение', user_id=user.id),
-            Plant(name='Яблоня', habit='вода', user_id=user.id)
-        ]
-        db.session.add_all(plants)
+        habits = ['спорт', 'чтение', 'вода']
+        for habit in habits:
+            plant = Plant(
+                name=f'Дерево {habit}',
+                habit=habit,
+                user_id=user.id,
+                seed=random.randint(1, 10000),
+                tree_stage=1
+            )
+            db.session.add(plant)
         db.session.commit()
 
         response = redirect(url_for('profile'))
@@ -64,7 +64,6 @@ def register():
         return response
 
     return render_template('register.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -82,15 +81,11 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/logout')
 def logout():
     response = redirect(url_for('index'))
     response.set_cookie('user_id', '', expires=0)
     return response
-
-
-# ... (остальной код остается тем же)
 
 @app.route('/profile')
 def profile():
@@ -102,14 +97,15 @@ def profile():
     plant_trees = {}
 
     for plant in plants:
-        # Генерируем дерево и заменяем ANSI-цвета на HTML-теги
+        tree_gen = TreeGenerator()
+        random.seed(plant.seed)
         tree_ansi = tree_gen.generate_tree(plant.tree_stage)
         tree_html = (tree_ansi
-                     .replace('\033[38;2;139;69;19m', '<span class="tree-trunk">')
-                     .replace('\033[38;2;160;82;45m', '<span class="tree-branch">')
-                     .replace('\033[38;2;34;139;34m', '<span class="tree-leaves">')
-                     .replace('\033[0m', '</span>')
-                     .replace('\n', '<br>'))
+                    .replace('\033[38;2;139;69;19m', '<span class="tree-trunk">')
+                    .replace('\033[38;2;160;82;45m', '<span class="tree-branch">')
+                    .replace('\033[38;2;34;139;34m', '<span class="tree-leaves">')
+                    .replace('\033[0m', '</span>')
+                    .replace('\n', '<br>'))
         plant_trees[plant.id] = tree_html
 
     return render_template(
@@ -118,7 +114,6 @@ def profile():
         plants=plants,
         plant_trees=plant_trees
     )
-
 
 @app.route('/update/<int:plant_id>', methods=['POST'])
 def update_plant(plant_id):
@@ -133,15 +128,33 @@ def update_plant(plant_id):
         if plant.progress >= 100:
             plant.level += 1
             plant.progress = 0
-            plant.tree_stage = min(plant.tree_stage + 1, 100)  # Макс 10 стадий
+            plant.tree_stage = min(plant.tree_stage + 1, 10)
             flash(f'Ваше растение {plant.name} выросло до уровня {plant.level}!', 'success')
 
         db.session.commit()
 
     return redirect(url_for('profile'))
 
+@app.route('/add_habit', methods=['POST'])
+def add_habit():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for('login'))
+
+    habit_name = request.form.get('habit_name')
+    if habit_name:
+        plant = Plant(
+            name=f'Дерево {habit_name}',
+            habit=habit_name,
+            user_id=user.id,
+            seed=random.randint(1, 10000),
+            tree_stage=1
+        )
+        db.session.add(plant)
+        db.session.commit()
+        flash(f'Новая привычка "{habit_name}" добавлена!', 'success')
+
+    return redirect(url_for('profile'))
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
