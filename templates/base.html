@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой виртуальный сад</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>{% block title %}Мой виртуальный сад{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Мой виртуальный сад</h1>
-        <nav>
-            {% if current_user %}
-                <a href="{{ url_for('profile') }}">Мой сад</a>
-                <a href="{{ url_for('logout') }}">Выйти</a>
-            {% else %}
-                <a href="{{ url_for('index') }}">Главная</a>
-                <a href="{{ url_for('login') }}">Вход</a>
-                <a href="{{ url_for('register') }}">Регистрация</a>
-            {% endif %}
-        </nav>
+        <div class="header-container">
+            <h1>Мой виртуальный сад</h1>
+            <nav>
+                {% if get_current_user() %}
+                    <a href="{{ url_for('profile') }}">Мой сад</a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                {% else %}
+                    <a href="{{ url_for('index') }}">Главная</a>
+                    <a href="{{ url_for('login') }}">Вход</a>
+                    <a href="{{ url_for('register') }}">Регистрация</a>
+                {% endif %}
+            </nav>
+        </div>
     </header>
 
-    <main>
+    <main class="main-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flashes">

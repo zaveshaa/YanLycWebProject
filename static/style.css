@@ -1,120 +1,254 @@
+/* Основные переменные цветов и стилей */
+:root {
+    --primary-color: #4CAF50;       /* Основной зеленый цвет */
+    --secondary-color: #45a049;     /* Темно-зеленый для hover-эффектов */
+    --text-color: #333;             /* Основной цвет текста */
+    --light-bg: #f5f5f5;           /* Цвет фона страницы */
+    --white: #ffffff;               /* Белый цвет */
+    --trunk-color: #8B4513;         /* Коричневый для ствола дерева */
+    --branch-color: #A0522D;        /* Светло-коричневый для веток */
+    --leaves-color: #228B22;        /* Зеленый для листьев */
+    --shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тень по умолчанию */
+}
+
+/* Базовые стили для всей страницы */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    min-height: 100vh;
 }
 
+/* Стили для шапки сайта */
 header {
-    background: #4CAF50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 1rem 0;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-container h1 {
+    margin: 10px 0;
+    color: var(--white);
+    font-size: 1.8rem;
+}
+
+/* Навигационное меню */
+nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 nav a {
-    color: white;
-    margin: 0 10px;
+    color: var(--white);
     text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
+nav a:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Основное содержимое страницы */
+.main-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    min-height: calc(100vh - 200px);
+}
+
+/* Сетка для отображения растений */
 .plants-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    padding: 20px;
+    padding: 20px 0;
 }
 
+/* Карточка растения */
 .plant-card {
-    background: white;
+    background: var(--white);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
 }
 
+.plant-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Контейнер для дерева */
 .tree-container {
-    background: #f8f9fa;
+    background: var(--white);
     padding: 10px;
-    margin: 10px 0;
+    margin: 15px 0;
     border-radius: 4px;
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow: auto;
 }
 
+/* Стили для ASCII-дерева */
 .tree {
     font-family: monospace;
-    line-height: 1;
+    line-height: 1.2;
     white-space: pre;
-    color: #5e3a1a;
     margin: 0;
-    overflow-x: auto;
+    text-align: center;
 }
 
+.tree-trunk {
+    color: var(--trunk-color);
+}
+
+.tree-branch {
+    color: var(--branch-color);
+}
+
+.tree-leaves {
+    color: var(--leaves-color);
+}
+
+/* Прогресс-бар */
 progress {
     width: 100%;
     height: 20px;
-    margin: 5px 0;
+    margin: 10px 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #ddd;
 }
 
+progress::-webkit-progress-bar {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    transition: width 0.5s;
+}
+
+.progress-container span {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Кнопки */
 .btn-water {
-    background: #4CAF50;
-    color: white;
+    background: var(--primary-color);
+    color: var(--white);
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
     font-size: 16px;
+    transition: background-color 0.3s;
 }
 
-.flash {
-    padding: 10px;
-    margin: 10px 0;
+.btn-water:hover {
+    background: var(--secondary-color);
+}
+
+/* Форма добавления привычки */
+.habit-form {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.habit-form input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 16px;
+}
+
+.habit-form button {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.habit-form button:hover {
+    background: var(--secondary-color);
+}
+
+/* Сообщения (flash) */
+.flash {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    border: 1px solid transparent;
 }
 
 .flash.success {
     background: #d4edda;
     color: #155724;
+    border-color: #c3e6cb;
 }
 
 .flash.error {
     background: #f8d7da;
     color: #721c24;
-}
-/* Добавляем стили для цветного дерева */
-.tree {
-    font-family: monospace;
-    line-height: 1.2;
-    white-space: pre;
-    background: #f8f9fa;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    overflow: hidden;
-    max-width: 100%;
+    border-color: #f5c6cb;
 }
 
-.tree-trunk {
-    color: #8B4513; /* Коричневый */
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .plants-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-container {
+        text-align: center;
+    }
+
+    .habit-form {
+        flex-direction: column;
+    }
 }
 
-.tree-branch {
-    color: #A0522D; /* Светло-коричневый */
-}
-
-.tree-leaves {
-    color: #228B22; /* Зеленый */
-}
-
-.plant-card {
-    max-width: 350px;
-    overflow: hidden;
-}
-
-.tree-container {
-    max-height: 300px;
-    overflow: auto;
-    border: 1px solid #ddd;
-    background: white;
+@media (min-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
