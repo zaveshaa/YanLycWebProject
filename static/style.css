@@ -8,10 +8,10 @@
     --trunk-color: #8B4513;         /* Коричневый для ствола дерева */
     --branch-color: #A0522D;        /* Светло-коричневый для веток */
     --leaves-color: #228B22;        /* Зеленый для листьев */
-    --shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тень по умолчанию */
+    --shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тень */
 }
 
-/* Базовые стили для всей страницы */
+/* Базовые стили всей страницы */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
@@ -22,7 +22,6 @@ body {
     min-height: 100vh;
 }
 
-/* Стили для шапки сайта */
 header {
     background: var(--primary-color);
     color: var(--white);
@@ -48,7 +47,6 @@ header {
     font-size: 1.8rem;
 }
 
-/* Навигационное меню */
 nav {
     display: flex;
     gap: 15px;
@@ -69,7 +67,6 @@ nav a:hover {
     background-color: var(--secondary-color);
 }
 
-/* Основное содержимое страницы */
 .main-container {
     max-width: 1200px;
     margin: 20px auto;
@@ -77,7 +74,6 @@ nav a:hover {
     min-height: calc(100vh - 200px);
 }
 
-/* Сетка для отображения растений */
 .plants-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -85,7 +81,6 @@ nav a:hover {
     padding: 20px 0;
 }
 
-/* Карточка растения */
 .plant-card {
     background: var(--white);
     border-radius: 8px;
@@ -98,7 +93,6 @@ nav a:hover {
     transform: translateY(-5px);
 }
 
-/* Контейнер для дерева */
 .tree-container {
     background: var(--white);
     padding: 10px;
@@ -109,7 +103,6 @@ nav a:hover {
     overflow: auto;
 }
 
-/* Стили для ASCII-дерева */
 .tree {
     font-family: monospace;
     line-height: 1.2;
@@ -130,7 +123,6 @@ nav a:hover {
     color: var(--leaves-color);
 }
 
-/* Прогресс-бар */
 progress {
     width: 100%;
     height: 20px;
@@ -158,7 +150,6 @@ progress::-webkit-progress-value {
     font-size: 14px;
 }
 
-/* Кнопки */
 .btn-water {
     background: var(--primary-color);
     color: var(--white);
@@ -175,7 +166,6 @@ progress::-webkit-progress-value {
     background: var(--secondary-color);
 }
 
-/* Форма добавления привычки */
 .habit-form {
     display: flex;
     gap: 10px;
@@ -204,7 +194,6 @@ progress::-webkit-progress-value {
     background: var(--secondary-color);
 }
 
-/* Сообщения (flash) */
 .flash {
     padding: 15px;
     margin: 20px 0;
@@ -224,7 +213,6 @@ progress::-webkit-progress-value {
     border-color: #f5c6cb;
 }
 
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .plants-grid {
         grid-template-columns: 1fr;
@@ -251,4 +239,167 @@ progress::-webkit-progress-value {
         justify-content: space-between;
         align-items: center;
     }
+}
+
+.plant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-form {
+    margin: 0;
+    padding: 0;
+}
+
+.delete-btn {
+    background: #a0522d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    line-height: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    background: #d32f2f;
+}
+
+.plant-card h3 {
+    margin: 0;
+    flex-grow: 1;
+}
+/* Стили аутентификации */
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.auth-container h1 {
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.btn-submit {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background: var(--secondary-color);
+}
+
+.auth-link {
+    margin-top: 20px;
+    color: #666;
+}
+
+.auth-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Стили главной страницы */
+.welcome-container {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 30px;
+    text-align: center;
+}
+
+.welcome-container h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.welcome-container p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.auth-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-main {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 12px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-main:hover {
+    background: var(--secondary-color);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--primary-color);
+    padding: 12px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 2px solid var(--primary-color);
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--white);
 }

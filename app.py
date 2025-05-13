@@ -16,19 +16,23 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+
 def get_current_user():
     user_id = request.cookies.get('user_id')
     if user_id:
         return User.query.get(int(user_id))
     return None
 
+
 @app.context_processor
 def inject_user():
     return dict(get_current_user=get_current_user)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -65,6 +69,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -81,11 +86,13 @@ def login():
 
     return render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     response = redirect(url_for('index'))
     response.set_cookie('user_id', '', expires=0)
     return response
+
 
 @app.route('/profile')
 def profile():
@@ -101,11 +108,11 @@ def profile():
         random.seed(plant.seed)
         tree_ansi = tree_gen.generate_tree(plant.tree_stage)
         tree_html = (tree_ansi
-                    .replace('\033[38;2;139;69;19m', '<span class="tree-trunk">')
-                    .replace('\033[38;2;160;82;45m', '<span class="tree-branch">')
-                    .replace('\033[38;2;34;139;34m', '<span class="tree-leaves">')
-                    .replace('\033[0m', '</span>')
-                    .replace('\n', '<br>'))
+                     .replace('\033[38;2;139;69;19m', '<span class="tree-trunk">')
+                     .replace('\033[38;2;160;82;45m', '<span class="tree-branch">')
+                     .replace('\033[38;2;34;139;34m', '<span class="tree-leaves">')
+                     .replace('\033[0m', '</span>')
+                     .replace('\n', '<br>'))
         plant_trees[plant.id] = tree_html
 
     return render_template(
@@ -114,6 +121,7 @@ def profile():
         plants=plants,
         plant_trees=plant_trees
     )
+
 
 @app.route('/update/<int:plant_id>', methods=['POST'])
 def update_plant(plant_id):
@@ -135,6 +143,7 @@ def update_plant(plant_id):
 
     return redirect(url_for('profile'))
 
+
 @app.route('/add_habit', methods=['POST'])
 def add_habit():
     user = get_current_user()
@@ -155,6 +164,22 @@ def add_habit():
         flash(f'Новая привычка "{habit_name}" добавлена!', 'success')
 
     return redirect(url_for('profile'))
+
+
+@app.route('/delete_plant/<int:plant_id>', methods=['POST'])
+def delete_plant(plant_id):
+    user = get_current_user()
+    if not user:
+        return redirect(url_for('login'))
+
+    plant = Plant.query.filter_by(id=plant_id, user_id=user.id).first()
+    if plant:
+        db.session.delete(plant)
+        db.session.commit()
+        flash(f'Привычка "{plant.habit}" удалена', 'success')
+
+    return redirect(url_for('profile'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
